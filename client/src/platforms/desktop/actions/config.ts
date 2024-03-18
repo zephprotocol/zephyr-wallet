@@ -1,0 +1,64 @@
+import { getNetworkByName, NET_TYPE_ID } from "constants/env";
+import { setTheme } from "shared/actions";
+import { getConfigIPC, updateConfigIPC } from "../ipc/misc";
+import { DesktopAppState } from "../reducers";
+import { NodeLocation, RemoteNode, SelectedNode } from "../types";
+import { setNodeForWalletSucceed } from "./selectNode";
+import { SET_NODE_LIST_FOR_WALLET_SUCCESS } from "./types";
+
+export const setDesktopConfig = () => {
+  return async (dispatch: any, getState: () => DesktopAppState) => {
+    const remoteNodes = await getAllAvailableNodes();
+
+    const netSpecificNodes: RemoteNode[] = remoteNodes[getNetworkByName()];
+    netSpecificNodes.forEach((node) => (node.location = NodeLocation.Remote));
+
+    dispatch({
+      type: SET_NODE_LIST_FOR_WALLET_SUCCESS,
+      payload: netSpecificNodes,
+    });
+
+    const config: any = await getConfigIPC(NET_TYPE_ID);
+    //  dispatch(setNodeForWallet())
+
+    if (config && config.selectedNode) {
+      const selected = config.selectedNode as Partial<SelectedNode>;
+
+      if (selected.location !== NodeLocation.None) {
+        dispatch(
+          setNodeForWalletSucceed(
+            selected.address!,
+            selected.port!,
+            selected.location!
+          )
+        );
+      }
+    
+   /*    else {
+        const defaultNode = selectRemoteDefaultNode(getState());
+        dispatch(
+          setNodeForWalletSucceed(
+            defaultNode.address!,
+            defaultNode.port!,
+            defaultNode.location
+          )
+        );
+      }  */
+    }
+
+    if (config && config.theme) {
+      dispatch(setTheme(config.theme));
+    }
+  };
+};
+
+export const updateDesktopConfig = (config: any) => {
+  updateConfigIPC(NET_TYPE_ID, config);
+};
+
+export const getAllAvailableNodes = async () => {
+  //import from public folder
+
+  const nodes = await fetch("nodes.json");
+  return nodes.json();
+};

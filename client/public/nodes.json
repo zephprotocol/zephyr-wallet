@@ -1,0 +1,50 @@
+{
+  "testnet": [
+    {
+      "address": "testnet-remote-node.zephyrprotocol.com",
+      "provider": "Testnet - node",
+      "port": "27767",
+      "trusted": true,
+      "default": true
+    },
+    {
+      "address": "127.0.0.1",
+      "provider": "Local Zephyr Testnet Node",
+      "port": "27767",
+      "trusted": true,
+      "default": false
+    }
+  ],
+  "stagenet": [
+    {
+      "address": "127.0.0.1",
+      "provider": "Local Zephyr Stagenet Node",
+      "port": "37767",
+      "trusted": true,
+      "default": true
+    },
+    {
+      "address": "stagenet-remote-node.zephyrprotocol.com",
+      "provider": "Stagenet - node",
+      "port": "37767",
+      "trusted": true,
+      "default": false
+    }
+  ],
+  "mainnet": [
+    {
+      "address": "remote-node.zephyrprotocol.com",
+      "provider": "Zephyr Remote Node",
+      "port": "17767",
+      "trusted": true,
+      "default": true
+    },
+    {
+      "address": "127.0.0.1",
+      "provider": "Local Zephyr Node",
+      "port": "17767",
+      "trusted": true,
+      "default": false
+    }
+  ]
+}
